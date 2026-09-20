@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_email
+ZGM,PU Zakład Gospodarki Mieszkaniowej w Nowym Tomyślu Sp. z o.o.,https://www.puzgm.pl/,Europe/Warsaw,pl,+48 61 44 22 391,puzgm@puzgm.pl

@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url
+PU ZGM Nowy Tomyśl,https://www.puzgm.pl/,pl,20260831,20261023,2026-09-18-1,puzgm@puzgm.pl,https://www.puzgm.pl/rozklad-jazdy/

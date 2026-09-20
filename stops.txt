@@ -1,0 +1,22 @@
+stop_id,stop_code,stop_name,stop_lat,stop_lon,zone_id,location_type,parent_station,wheelchair_boarding
+CHOP,1,Plac Chopina,52.31635,16.13287,NT,0,,1
+POZ,2,Ul. Poznańska,52.31577,16.13919,NT,0,,1
+PAP,3,Ul. Paprocka,52.31599,16.14631,NT,0,,1
+GRUD,4,Ul. Grudnowa,52.32670,16.14289,NT,0,,1
+KOM,5,Ul. Komunalna,52.32824,16.13373,NT,0,,1
+KOS,6,Ul. Kościuszki,52.31770,16.13853,NT,0,,1
+DLU,7,Ul. Długa,52.31818,16.13248,NT,0,,1
+NIEP,8,Plac Niepodległości,52.31828,16.12861,NT,0,,1
+STY1,9,Ul. 3 Stycznia,52.32024,16.12451,NT,0,STY,1
+STY2,18,Ul. 3 Stycznia,52.32034,16.12409,NT,0,STY,1
+SLO,10,Ul. Ślósarskiego,52.32348,16.12465,NT,0,,1
+JAN1,11,Ul. Janusa,52.32135,16.12111,NT,0,JAN,1
+JAN2,19,Ul. Janusa,52.31804,16.12165,NT,0,JAN,1
+MUS1,12,Ul. Musiała,52.31527,16.12487,NT,0,MUS,1
+MUS2,20,Ul. Musiała,52.31543,16.12508,NT,0,MUS,1
+TYS1,13,Ul. Tysiąclecia,52.31445,16.12912,NT,0,TYS,1
+TYS2,21,Ul. Tysiąclecia,52.31475,16.12924,NT,0,TYS,1
+KOL1,14,Ul. Kolejowa,52.30781,16.12908,NT,0,KOL,1
+KOL2,17,Ul. Kolejowa,52.30903,16.12956,NT,0,KOL,1
+PLD,15,Plac Dworcowy,52.30428,16.12833,NT,0,,1
+PKP,16,Dworzec PKP,52.30441,16.13266,NT,0,,1

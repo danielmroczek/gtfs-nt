@@ -1,0 +1,2 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+A,ZGM,A,Dworzec PKP — Plac Chopina (linia okołomiejska),Kursuje w dni robocze (poniedziałek–piątek). Linia okrężna: Dworzec PKP → Plac Chopina → Dworzec PKP,3,https://www.puzgm.pl/rozklad-jazdy/,00AEEF,000000
