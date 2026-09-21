@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive version
+        id: ver
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$(date +'%Y.%m.%d').0"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Pack GTFS feed
+        run: |
+          mkdir -p dist
+          zip -j "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" feed/*.txt
+          unzip -l "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip"
+
+      - name: Validate GTFS feed
+        continue-on-error: true
+        run: |
+          mkdir -p validation
+          cp dist/gtfs-nt-*.zip gtfs.zip
+          docker run --rm \
+            -v "$PWD:/work" \
+            ghcr.io/mobilitydata/gtfs-validator:latest \
+            -i /work/gtfs.zip \
+            -o /work/validation \
+            -c pl \
+            -t 4
+
+      - name: Summarize validation
+        if: always()
+        run: |
+          if [ -f validation/report.json ]; then
+            echo "### Raport walidacji GTFS" >> "$GITHUB_STEP_SUMMARY"
+            jq -r '.notices[]? | "- [\(.severity)] \(.code): \(.totalNoticesCount)"' \
+              validation/report.json >> "$GITHUB_STEP_SUMMARY" || true
+          else
+            echo "Brak raportu walidacji." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload validation report (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtfs-validation-report
+          path: validation/
+          if-no-files-found: ignore
+
+      - name: Upload feed ZIP (artifact, workflow_dispatch)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtfs-feed-zip
+          path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Copy stable-name assets
+        run: |
+          cp "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" dist/gtfs-nt-latest.zip
+          if [ -f validation/report.json ]; then
+            cp validation/report.json validation/gtfs-validation-report.json
+          fi
+
+      - name: Extract changelog section
+        id: notes
+        run: |
+          VERSION="v${{ steps.ver.outputs.version }}"
+          # wyciągnij treść sekcji "## <wersja>" (do następnej sekcji "## ")
+          awk -v ver="$VERSION" '
+            $0 == "## " ver {flag=1; next}
+            flag && /^## / {exit}
+            flag {print}
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check changelog coverage
+        if: github.ref_type == 'tag' && steps.notes.outputs.empty == 'true'
+        run: |
+          echo "::error::CHANGELOG.md nie zawiera sekcji dla wersji ${{ github.ref_name }}. Dodaj wpis '## ${{ github.ref_name }}' przed wypchnięciem taga."
+          exit 1
+
+      - name: Create release and upload assets
+        if: github.ref_type == 'tag'
+        run: |
+          EXTRA_ARGS=""
+          if [ "${{ steps.notes.outputs.empty }}" != "true" ]; then
+            EXTRA_ARGS="--notes-file release-notes.md"
+          fi
+          gh release create "${{ github.ref_name }}" \
+            "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" \
+            dist/gtfs-nt-latest.zip \
+            --title "GTFS feed ${{ github.ref_name }}" \
+            $EXTRA_ARGS
+          gh release upload "${{ github.ref_name }}" CHANGELOG.md --clobber
+          if [ -f validation/gtfs-validation-report.json ]; then
+            gh release upload "${{ github.ref_name }}" \
+              validation/gtfs-validation-report.json --clobber
+          fi
+          if [ -f validation/report.json ]; then
+            gh release upload "${{ github.ref_name }}" \
+              validation/report.json validation/report.html --clobber
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

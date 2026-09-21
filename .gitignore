@@ -1,0 +1,4 @@
+validation/
+.validation-work/
+dist/
+gtfs.zip
