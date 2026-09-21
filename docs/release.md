@@ -1,8 +1,9 @@
 # Proces wydania feedu GTFS
 
-Wersjonowanie: **CalVer** `YYYY.MM.DD.PATCH` — np. `2026.09.21.0`.
-Pierwsze wydanie danego dnia ma patch `0`, kolejne poprawki tego samego dnia
-to `1`, `2`, ...
+Wersjonowanie: **CalVer** `YYYY.MM.DD` — np. `2026.09.21`.
+Dniu wydania odpowiada dokładnie jeden tag `vYYYY.MM.DD`; nowa wersja tego
+samego dnia oznacza nadpisanie (usunięcie starego taga i release'u przed
+wypchnięciem ponownie).
 
 ## Wydanie nowej wersji krok po kroku
 
@@ -45,8 +46,8 @@ git push origin main
 ### 5. Otaguj wersję i wypchnij tag
 
 ```bash
-git tag v2026.09.21.0
-git push origin v2026.09.21.0
+git tag v2026.09.21
+git push origin v2026.09.21
 ```
 
 ### 6. GitHub Actions buduje release
@@ -55,7 +56,7 @@ Workflow [`.github/workflows/release.yml`](../.github/workflows/release.yml)
 uruchomi się automatycznie po pushu taga (albo ręcznie przez *Run workflow*
 w zakładce **Actions** — wtedy wersja bierze się z bieżącej daty):
 
-1. pakuje `feed/*.txt` do `gtfs-nt-YYYY.MM.DD.PATCH.zip` (pliki na root zipa),
+1. pakuje `feed/*.txt` do `gtfs-nt-YYYY.MM.DD.zip` (pliki na root zipa),
 2. waliduje feed gtfs-validatorem,
 3. wrzuca raport walidacji jako artefakt workflow i podsumowanie w *Job summary*,
 4. wyciąga sekcję wersji z `CHANGELOG.md` (**blokuje release**, jeśli brak wpisu)

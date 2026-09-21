@@ -14,7 +14,7 @@ Dane udostępniono na licencji [MIT](./LICENSE).
 
 Najnowszą paczkę feedu (ZIP zgodny ze standardem GTFS) pobierzesz ze strony
 [Releases](https://github.com/danielmroczek/gtfs-nt/releases).
-Wersjonowanie: CalVer `YYYY.MM.DD.PATCH`. Każdy release zawiera także raport
+Wersjonowanie: CalVer `YYYY.MM.DD`. Każdy release zawiera także raport
 walidacji ([MobilityData gtfs-validator](https://github.com/MobilityData/gtfs-validator)).
 
 Stały link do najnowszej wersji feedu (do subskrybowania w aplikacjach):
