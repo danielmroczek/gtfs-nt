@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  RELEASE_TITLE_PREFIX: "GTFS feed"
+  RELEASE_TITLE_PREFIX: "Nowy Tomyśl GTFS"
 
 jobs:
   release:
@@ -32,8 +32,11 @@ jobs:
       - name: Pack GTFS feed
         run: |
           mkdir -p dist
-          zip -j "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" feed/*.txt
-          unzip -l "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip"
+          # Stała nazwa ZIP-a => stabilny link /releases/latest/download/gtfs-nt.zip
+          # (zalecenie specyfikacji GTFS: jeden plik w stałej lokalizacji z aktualną
+          # wersją feedu; wersję rozpoznasz po tagu release'u / CHANGELOG.
+          zip -j "dist/gtfs-nt.zip" feed/*.txt
+          unzip -l "dist/gtfs-nt.zip"
 
       - name: Validate GTFS feed
         continue-on-error: true
@@ -98,16 +101,12 @@ jobs:
       - name: Create release and upload assets
         if: github.ref_type == 'tag'
         run: |
-          # ZIP per-release ma wersję w nazwie, więc pod stałą nazwę
-          # gtfs-nt-latest.zip kopiujemy go dla linku /latest/download/
-          cp "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" dist/gtfs-nt-latest.zip
           EXTRA_ARGS=""
           if [ "${{ steps.notes.outputs.empty }}" != "true" ]; then
             EXTRA_ARGS="--notes-file release-notes.md"
           fi
           gh release create "${{ github.ref_name }}" \
-            "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" \
-            dist/gtfs-nt-latest.zip \
+            dist/gtfs-nt.zip \
             --title "$RELEASE_TITLE_PREFIX ${{ github.ref_name }}" \
             $EXTRA_ARGS
           gh release upload "${{ github.ref_name }}" CHANGELOG.md --clobber

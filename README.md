@@ -4,23 +4,19 @@ Otwarty zbiór danych [GTFS](https://gtfs.org/schedule/) dla komunikacji miejski
 w Nowym Tomyślu, obsługiwanej przez
 **PU Zakład Gospodarki Mieszkaniowej w Nowym Tomyślu Sp. z o.o.**
 
-> [!NOTE]
-> Zbiór obejmuje linię **A** (linia okołomiejska Dworzec PKP ↔ Plac Chopina),
-> kursującą w dni robocze.
-
 Dane udostępniono na licencji [MIT](./LICENSE).
 
 ## Pobieranie
 
 Najnowszą paczkę feedu (ZIP zgodny ze standardem GTFS) pobierzesz ze strony
 [Releases](https://github.com/danielmroczek/gtfs-nt/releases).
-Wersjonowanie: CalVer `YYYY.MM.DD`. Każdy release zawiera także raport
+Wersjonowanie: [CalVer](https://calver.org/) `YYYY.MM.DD`. Każdy release zawiera także raport
 walidacji ([MobilityData gtfs-validator](https://github.com/MobilityData/gtfs-validator)).
 
 Stały link do najnowszej wersji feedu (do subskrybowania w aplikacjach):
 
 ```
-https://github.com/danielmroczek/gtfs-nt/releases/latest/download/gtfs-nt-latest.zip
+https://github.com/danielmroczek/gtfs-nt/releases/latest/download/gtfs-nt.zip
 ```
 
 Jak wydać nową wersję: [`docs/release.md`](./docs/release.md).
