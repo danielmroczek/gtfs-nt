@@ -9,6 +9,9 @@ on:
 permissions:
   contents: write
 
+env:
+  RELEASE_TITLE_PREFIX: "GTFS feed"
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -109,7 +112,7 @@ jobs:
           gh release create "${{ github.ref_name }}" \
             "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" \
             dist/gtfs-nt-latest.zip \
-            --title "GTFS feed ${{ github.ref_name }}" \
+            --title "$RELEASE_TITLE_PREFIX ${{ github.ref_name }}" \
             $EXTRA_ARGS
           gh release upload "${{ github.ref_name }}" CHANGELOG.md --clobber
           if [ -f validation/gtfs-validation-report.json ]; then
