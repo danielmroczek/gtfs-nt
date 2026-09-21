@@ -75,13 +75,6 @@ jobs:
           path: dist/*.zip
           if-no-files-found: error
 
-      - name: Copy stable-name assets
-        run: |
-          cp "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" dist/gtfs-nt-latest.zip
-          if [ -f validation/report.json ]; then
-            cp validation/report.json validation/gtfs-validation-report.json
-          fi
-
       - name: Extract changelog section
         id: notes
         run: |
@@ -105,6 +98,9 @@ jobs:
       - name: Create release and upload assets
         if: github.ref_type == 'tag'
         run: |
+          # ZIP per-release ma wersję w nazwie, więc pod stałą nazwę
+          # gtfs-nt-latest.zip kopiujemy go dla linku /latest/download/
+          cp "dist/gtfs-nt-${{ steps.ver.outputs.version }}.zip" dist/gtfs-nt-latest.zip
           EXTRA_ARGS=""
           if [ "${{ steps.notes.outputs.empty }}" != "true" ]; then
             EXTRA_ARGS="--notes-file release-notes.md"
@@ -115,10 +111,6 @@ jobs:
             --title "$RELEASE_TITLE_PREFIX ${{ github.ref_name }}" \
             $EXTRA_ARGS
           gh release upload "${{ github.ref_name }}" CHANGELOG.md --clobber
-          if [ -f validation/gtfs-validation-report.json ]; then
-            gh release upload "${{ github.ref_name }}" \
-              validation/gtfs-validation-report.json --clobber
-          fi
           if [ -f validation/report.json ]; then
             gh release upload "${{ github.ref_name }}" \
               validation/report.json validation/report.html --clobber

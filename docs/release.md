@@ -73,8 +73,13 @@ subskrybować niezmienne URL-e, które zawsze wskazują najnowsze wydanie:
 
 ```
 https://github.com/danielmroczek/gtfs-nt/releases/latest/download/gtfs-nt-latest.zip
-https://github.com/danielmroczek/gtfs-nt/releases/latest/download/gtfs-validation-report.json
+https://github.com/danielmroczek/gtfs-nt/releases/latest/download/report.json
 ```
+
+Nazwy raportów (`report.json`, `report.html`) są z natury stałe, więc
+podpadają pod ten sam mechanizm bez dodatkowych kopii. Stała nazwa ZIP-a
+(`gtfs-nt-latest.zip`) powstaje przez skopiowanie wersjonowanego ZIP-a
+na etapie tworzenia release'u.
 
 Walidacja **nie blokuje** publikacji release'u — uwagi walidatora traktujemy
 informacyjnie.
