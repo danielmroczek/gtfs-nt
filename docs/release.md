@@ -56,11 +56,12 @@ Workflow [`.github/workflows/release.yml`](../.github/workflows/release.yml)
 uruchomi się automatycznie po pushu taga (albo ręcznie przez *Run workflow*
 w zakładce **Actions** — wtedy wersja bierze się z bieżącej daty):
 
-1. pakuje `feed/*.txt` do `gtfs-nt.zip` (pliki na root zipa, stała nazwa),
+1. pakuje `feed/*.txt` do `<slug repozytorium>.zip` (tu: `gtfs-nt.zip`, pliki
+   na root zipa, stała nazwa),
 2. waliduje feed gtfs-validatorem,
 3. wrzuca raport walidacji jako artefakt workflow i podsumowanie w *Job summary*,
 4. wyciąga sekcję wersji z `CHANGELOG.md` (**blokuje release**, jeśli brak wpisu)
-   i używa jej jako opisu release'u, dołączając changelog jako asset,
+   i używa jej jako opisu release'u,
 5. tworzy release z ZIP-em oraz `report.json` / `report.html` jako assetami
 	(ZIP i raport JSON mają stałe nazwy — patrz niżej),
 6. przy ręcznym uruchomieniu (*Run workflow*) zamiast release'u powstają

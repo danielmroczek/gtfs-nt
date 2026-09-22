@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  RELEASE_TITLE_PREFIX: "Nowy Tomyśl GTFS"
+  REPO_SLUG: ${{ github.event.repository.name }}
 
 jobs:
   release:
@@ -32,17 +32,18 @@ jobs:
       - name: Pack GTFS feed
         run: |
           mkdir -p dist
-          # Stała nazwa ZIP-a => stabilny link /releases/latest/download/gtfs-nt.zip
-          # (zalecenie specyfikacji GTFS: jeden plik w stałej lokalizacji z aktualną
-          # wersją feedu; wersję rozpoznasz po tagu release'u / CHANGELOG.
-          zip -j "dist/gtfs-nt.zip" feed/*.txt
-          unzip -l "dist/gtfs-nt.zip"
+          # Nazwa ZIP-a = slug repozytorium; stała nazwa => stabilny link
+          # /releases/latest/download/<slug>.zip (zalecenie specyfikacji
+          # GTFS: jeden plik w stałej lokalizacji z aktualną wersją feedu;
+          # wersję rozpoznasz po tagu release'u / CHANGELOG).
+          zip -j "dist/${{ env.REPO_SLUG }}.zip" feed/*.txt
+          unzip -l "dist/${{ env.REPO_SLUG }}.zip"
 
       - name: Validate GTFS feed
         continue-on-error: true
         run: |
           mkdir -p validation
-          cp dist/gtfs-nt-*.zip gtfs.zip
+          cp dist/*.zip gtfs.zip
           docker run --rm \
             -v "$PWD:/work" \
             ghcr.io/mobilitydata/gtfs-validator:latest \
@@ -105,11 +106,11 @@ jobs:
           if [ "${{ steps.notes.outputs.empty }}" != "true" ]; then
             EXTRA_ARGS="--notes-file release-notes.md"
           fi
+          SLUG="${{ env.REPO_SLUG }}"
           gh release create "${{ github.ref_name }}" \
-            dist/gtfs-nt.zip \
-            --title "$RELEASE_TITLE_PREFIX ${{ github.ref_name }}" \
+            "dist/${SLUG}.zip" \
+            --title "$SLUG ${{ github.ref_name }}" \
             $EXTRA_ARGS
-          gh release upload "${{ github.ref_name }}" CHANGELOG.md --clobber
           if [ -f validation/report.json ]; then
             gh release upload "${{ github.ref_name }}" \
               validation/report.json validation/report.html --clobber
