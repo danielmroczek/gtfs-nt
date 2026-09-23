@@ -2,7 +2,7 @@ stop_id,stop_code,stop_name,stop_lat,stop_lon,zone_id,location_type,wheelchair_b
 CHOP,1,Plac Chopina,52.31635,16.13287,NT,0,1
 POZ,2,Ul. Poznańska,52.31577,16.13919,NT,0,1
 PAP,3,Ul. Paprocka,52.31599,16.14631,NT,0,1
-GRUD,4,Ul. Grudnowa,52.3267,16.14289,NT,0,1
+GRUD,4,Ul. Grudniowa,52.3267,16.14289,NT,0,1
 KOM,5,Ul. Komunalna,52.32824,16.13373,NT,0,1
 KOS,6,Ul. Kościuszki,52.3177,16.13853,NT,0,1
 DLU,7,Ul. Długa,52.31818,16.13248,NT,0,1
