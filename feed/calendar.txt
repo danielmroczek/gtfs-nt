@@ -1,2 +1,2 @@
 service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
-ZGM_WR,1,1,1,1,1,0,0,20260831,20261023
+ZGM_WR,1,1,1,1,1,0,0,20261026,20261211
